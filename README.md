@@ -80,3 +80,11 @@ Una volta fatto possiamo eseguire il playbook settingup_kubernetes_cluster.yml
 Con il comando:
 
 > ansible-playbook settingup_kubernetes_cluster.yml
+
+Dopo aver eseguito il playbook, verifichiamo che sia stato creato il nostro nodo
+
+> kubectl get nodes
+
+Ci deve restiruire il Nodo:
+
+- kubernetes-master
