@@ -67,6 +67,12 @@ Successivamente entriamo e impostiamo le variavili anche all'interno del nostro 
 - hosts
 - env_variables
 
+### Chiavi ssh
+
+Generiamo una chiave ssh sulla nostra VM kubernetes-master
+
+Una volta creata andiamo a creare con **ssh** una chiave pubblica e una privata, e andiamo a inserire la chiave pubblica all'interno del percorso **/root/.ssh/authorized_keys** , quest'ultimo punto lo facciamo anche per le altre vm, in maniera tale da poter accedere in maniera da avere una connessione sicura tra le nostre vm.
+
 ---
 
 Una volta fatto possiamo eseguire il playbook settingup_kubernetes_cluster.yml
