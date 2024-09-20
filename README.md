@@ -40,9 +40,37 @@ Alle VM è stato impostato corrispettivamente un ip statico e la scheda di rete 
 - kubernetes-worker1: 192.168.1.111
 - kubernetes-worker2: 192.168.1.112
 
-Per far si che le VM comunicassero tra di loro, è stata creata una entry per la risoluzione dei nomi nel percorso **/etc/hosts**.
+Per far si che le VM comunicassero tra di loro, è stata creata una entry per la risoluzione dei nomi nel percorso **/etc/hosts** su ogni VM.
+
+>192.168.1.110 kubernetes-master.net kubernetes-master <br>
+192.168.1.111 kubernetes-worker1.net kubernetes-worker1
+<br>
+192.168.1.112 kubernetes-worker2.net kubernetes-worker2
+
+Dopo proviamo a fare il ping per vedere le VM sono raggiungibili tra di loro.
 
 Per la creazione del cluster si è fatto affidamento al seguente repository dopo aver studiato e analizzato il codice fornito.
 In partical modo i playbook di ansible.
 
+---
+
+Installiamo Git per scaricare il repository
+
 >git clone <https://github.com/learnitguide/kubernetes-and-ansible.git>
+
+Con il comando impostiamo lo static hostname:
+
+> hostnamectl set-hostname kubernetes-name
+
+Successivamente entriamo e impostiamo le variavili anche all'interno del nostro repo kubernetes-and-ansible con **cd kubernetes-and-ansible\centos** entriamo nella directory impostiamo l'ip della nostra VM kubernetes-master e delle nostre kubernetes-worker nei seguenti file:
+
+- hosts
+- env_variables
+
+---
+
+Una volta fatto possiamo eseguire il playbook settingup_kubernetes_cluster.yml
+
+Con il comando:
+
+> ansible-playbook settingup_kubernetes_cluster.yml
