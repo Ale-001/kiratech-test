@@ -83,6 +83,43 @@ Con il comando:
 
 [settingup_kubernetes_cluster.yml](../kubernetes-and-ansible/centos/settingup_kubernetes_cluster.yml)
 
+Questo primo playbook, esegue tre playbook differenti:
+
+```yml
+- import_playbook: playbooks/prerequisites.yml
+- import_playbook: playbooks/setting_up_nodes.yml
+- import_playbook: playbooks/configure_master_node.yml
+```
+
+---
+
+### prerequisites.yml
+
+Questo playbook è progettato per essere eseguito su tutti i nodi con l'obiettivo di disabilitare lo swap
+Lo swap è uno spazio di memoria su disco utilizzato dai sistemi operativi per estendere la capacità della RAM.
+Serve per rendere più efficienti le risorse e per evitare di sovracaricare la memoria ram e il sistema.
+
+[prerequisites.yml](../kubernetes-and-ansible/centos/playbooks/prerequisites.yml)
+
+---
+
+### setting_up_nodes.yml
+
+Questo playbook si occupa di configurare un nodo per Kubernetes, installando i pacchetti necessari, configurando i repository e gestendo le impostazioni del firewall.
+Inoltre vengono configurate le variabili come: packages, services, e ports che verranno utilizzate nel playbook.
+
+[setting_up_nodes.yml](../kubernetes-and-ansible/centos/playbooks/setting_up_nodes.yml)
+
+---
+
+### configure_master_node.yml
+
+Questo playbook si occupa di configurare e inizializzare un nodo master in un cluster Kubernetes.
+
+[configure_master_node.yml](../kubernetes-and-ansible/centos/playbooks/configure_master_node.yml)
+
+---
+
 Dopo aver eseguito il playbook, verifichiamo che sia stato creato il nostro nodo
 
 > kubectl get nodes
