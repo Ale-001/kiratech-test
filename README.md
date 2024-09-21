@@ -81,6 +81,8 @@ Con il comando:
 
 > ansible-playbook settingup_kubernetes_cluster.yml
 
+[settingup_kubernetes_cluster.yml](../kubernetes-and-ansible/centos/settingup_kubernetes_cluster.yml)
+
 Dopo aver eseguito il playbook, verifichiamo che sia stato creato il nostro nodo
 
 > kubectl get nodes
@@ -88,3 +90,41 @@ Dopo aver eseguito il playbook, verifichiamo che sia stato creato il nostro nodo
 Ci deve restiruire il Nodo:
 
 - kubernetes-master
+
+Successivamente eseguiamo il playbook:
+
+> ansible-playbook join_kubernetes_workers_nodes.yml
+
+[join_kubernetes_workers_nodes.yml](../kubernetes-and-ansible/centos/join_kubernetes_workers_nodes.yml)
+
+E verifichiamo che siano stati creati correttamente anche i nodi dei worker
+
+> get nodes
+
+Ora che abbiamo creato il nostro cluster, proviamo a fare il deploy di un container apache
+
+> kubectl apply -f httpd-deployment.yml
+
+[httpd-deployment.yml](../kubernetes-and-ansible/centos/httpd-deployment.yml)
+
+Con il seguente comando possiamo visionare i nostri deploy:
+
+> kubectl get deploy
+
+Mentre se vogliamo visionare nel dettaglio i nostri pods creati, usiamo il seguente comando:
+
+> kubectl get pods
+
+Se vogliamo avere maggiori informazioni dei nostri pods, come ad esempio visionare su che nodo sono o l'indirizzo ip, usiamo il comando:
+
+> kubectl get pods -o wide
+
+Per verificare se il nostro server-apache è raggiungibile possiamo vedere se tramite comando, la porta di apache è la 80:
+
+> curl indirizzo-ip:porta
+
+Nel mio laboratorio mi ha restituito:
+
+```html
+<html><body><h1>It works! </h1></body></html>
+```
