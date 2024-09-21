@@ -128,3 +128,7 @@ Nel mio laboratorio mi ha restituito:
 ```html
 <html><body><h1>It works! </h1></body></html>
 ```
+
+In questo primo laboratorio, mi sono focalizzato sul capire cosa fosse kubernetes e come quest'ultimo permettesse di orchestrare i container (pod) creati.
+
+Sono state riscontrate molte difficoltà in particolar modo dal punto di vista di tool come ansible che non avevo mai approfondito e visto.
