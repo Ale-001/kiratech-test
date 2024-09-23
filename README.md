@@ -169,3 +169,7 @@ Nel mio laboratorio mi ha restituito:
 In questo primo laboratorio, mi sono focalizzato sul capire cosa fosse kubernetes e come quest'ultimo permettesse di orchestrare i container (pod) creati.
 
 Sono state riscontrate molte difficoltà in particolar modo dal punto di vista di tool come ansible che non avevo mai approfondito e visto.
+
+## In progress
+
+Attualmento sto provando a ricrearlo anche su Fedora
