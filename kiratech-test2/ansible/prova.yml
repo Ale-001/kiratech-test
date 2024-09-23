@@ -1,0 +1,47 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install Kubernetes dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apt-transport-https
+        - curl
+
+    - name: Add Kubernetes GPG key
+      shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+    - name: Add Kubernetes repository
+      apt_repository:
+        repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+
+    - name: Install kubelet, kubeadm, and kubectl
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
+
+    - name: Initialize Kubernetes cluster (Manager node)
+      shell: kubeadm init --pod-network-cidr=10.244.0.0/16
+      when: inventory_hostname == "manager"
+
+    - name: Copy kubeconfig to regular user (Manager node)
+      shell: |
+        mkdir -p $HOME/.kube
+        cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+      when: inventory_hostname == "manager"
+
+    - name: Join Kubernetes cluster (Worker nodes)
+      shell: kubeadm join <manager-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+      when: inventory_hostname != "manager"

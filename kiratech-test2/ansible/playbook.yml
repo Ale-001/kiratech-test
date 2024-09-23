@@ -1,0 +1,10 @@
+---
+- hosts: kube-master
+  become: yes
+  roles:
+    - kube-master
+
+- hosts: kube-workers
+  become: yes
+  roles:
+    - kube-worker

@@ -1,0 +1,42 @@
+---
+- name: Installare i prerequisiti
+  yum:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+      - docker
+      - git
+    state: present
+
+- name: Abilitare e avviare Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Creare il file di configurazione kubeadm
+  template:
+    src: kubeadm-config.yaml.j2
+    dest: /etc/kubernetes/kubeadm-config.yaml
+
+- name: Inizializzare il cluster Kubernetes
+  command: kubeadm init --config /etc/kubernetes/kubeadm-config.yaml
+  register: kubeadm_init
+  ignore_errors: true
+
+- name: Creare la directory .kube
+  file:
+    path: /home/ec2-user/.kube
+    state: directory
+    mode: '0755'
+
+- name: Copiare il file di configurazione kubectl
+  command: /bin/bash -c 'mkdir -p $HOME/.kube && sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config && sudo chown $(id -u):$(id -g) $HOME/.kube/config'
+
+- name: Installare Calico (CNI)
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+- name: Mostrare il token di join
+  debug:
+    msg: "{{ kubeadm_init.stdout }}"
